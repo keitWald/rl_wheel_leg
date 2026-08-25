@@ -29,8 +29,8 @@ cmd_lin_vel_target = 0.0
 cmd_yaw_vel = 0.0
 cmd_yaw_vel_target = 0.0
 DEFAULT_CMD_HEIGHT = 0.10
-HEIGHT_MIN = 0.14
-HEIGHT_MAX = 0.25
+HEIGHT_MIN = 0.09
+HEIGHT_MAX = 0.35
 
 
 Jump_after_height_big = False
@@ -39,7 +39,6 @@ FFF = 1.0
 XXX = 0.1
 YYY = 0.4
 JUMP_POLICY_DURATION_S = 0.55
-taumax = 30.0
 
 cmd_height = DEFAULT_CMD_HEIGHT
 pressed_keys = set()
@@ -51,20 +50,20 @@ torque_enabled = True
 
 # ===== Training-aligned constants =====
 DOF_NAMES = [
-    "lf0_Joint",
-    "lf1_Joint",
-    "l_wheel_Joint",
     "rf0_Joint",
     "rf1_Joint",
     "r_wheel_Joint",
+    "lf0_Joint",
+    "lf1_Joint",
+    "l_wheel_Joint",
 ]
 
-LF0_IDX = 0
-LF1_IDX = 1
-LW_IDX = 2
-RF0_IDX = 3
-RF1_IDX = 4
-RW_IDX = 5
+RF0_IDX = 0
+RF1_IDX = 1
+RW_IDX = 2
+LF0_IDX = 3
+LF1_IDX = 4
+LW_IDX = 5
 
 # JUMP_XIAOFUDU_ONNX_PATH = "./actor/yuntai/tiao_2000.onnx"
 # JUMP_XIAOFUDU_ONNX_PATH = "./actor/yuntai/猛烈跳跃软软的会收腿了但是不够高.onnx"
@@ -74,9 +73,7 @@ RECOVER_2500_ONNX_PATH = resource_path("actor/yuntai/上台阶3_angz+.onnx")
 # RECOVER_2500_ONNX_PATH = "./actor/yuntai/6010.2加入随机地形terrain_proportions0.50.20.10.10.10.0.onnx"
 
 # "E:\sim2sim_Isaacgym2mujuco\actor\yuntai\"
-JUMP_XIAOFUDU_DEFAULT_DOF_POS = np.array([0.2, 0.4, 0.0, -0.2, -0.4, 0.0], dtype=np.float32)
-RECOVER_2500_DEFAULT_DOF_POS = np.array([-0.23, -0.65, 0.0, 0.23, 0.65, 0.0], dtype=np.float32)
-# RECOVER_2500_DEFAULT_DOF_POS = np.array([0.2, 0.4, 0.0, -0.2, -0.4, 0.0], dtype=np.float32)
+TRAINING_DEFAULT_DOF_POS = np.array([-0.2, -0.4, 0.0, 0.2, 0.4, 0.0], dtype=np.float32)
 OBS_DOF_POS_IDXS = np.array([0, 1, 3, 4], dtype=np.int64)
 
 RECOVER_POLICY_NAME = "plane"
@@ -84,7 +81,7 @@ JUMP_POLICY_NAME = "jump"
 
 SPACE_MODE_KEY = "__space__"
 DEFAULT_XML_PATH = resource_path(
-    "assert_now/infantry_binglian_yuntai/infantry_V2/meshes/mjmodel.xml"
+    "assert_now/infantry_chuanlian/infantry_V4/mjmodel.xml"
 )
 DEFAULT_POLICY_NAME = RECOVER_POLICY_NAME
 jump_policy_duration_s = JUMP_POLICY_DURATION_S
@@ -93,22 +90,18 @@ RUNTIME_PRESETS = {
     "jump": {
         "xml_path": DEFAULT_XML_PATH,
         "onnx_path": JUMP_XIAOFUDU_ONNX_PATH,
-        "default_dof_pos": JUMP_XIAOFUDU_DEFAULT_DOF_POS,
+        "default_dof_pos": TRAINING_DEFAULT_DOF_POS,
         "command_scale": np.array([3.0, 0.25, 5.0], dtype=np.float32),
-        # "p_gains": np.array([20.0, 20.0, 0.0, 20.0, 20.0, 0.0], dtype=np.float32),
-        # "d_gains": np.array([1.0, 1.0, 0.2, 1.0, 1.0, 0.2], dtype=np.float32),
-        "p_gains": np.array([6.0, 6.0, 0.0, 6.0, 6.0, 0.0], dtype=np.float32),
-        "d_gains": np.array([0.5, 0.5, 0.5, 0.5, 0.5, 0.2], dtype=np.float32),
+        "p_gains": np.array([5.0, 5.0, 0.0, 5.0, 5.0, 0.0], dtype=np.float32),
+        "d_gains": np.array([1.5, 1.5, 0.25, 1.5, 1.5, 0.25], dtype=np.float32),
     },
     "plane": {
         "xml_path": DEFAULT_XML_PATH,
         "onnx_path": RECOVER_2500_ONNX_PATH,
-        "default_dof_pos": RECOVER_2500_DEFAULT_DOF_POS,
+        "default_dof_pos": TRAINING_DEFAULT_DOF_POS,
         "command_scale": np.array([3.0, 0.25, 5.0], dtype=np.float32),
-        # "p_gains": np.array([20.0, 20.0, 0.0, 20.0, 20.0, 0.0], dtype=np.float32),
-        # "d_gains": np.array([1.0, 1.0, 0.2, 1.0, 1.0, 0.2], dtype=np.float32),
-        "p_gains": np.array([15.0, 15.0, 0.0, 15.0, 15.0, 0.0], dtype=np.float32),
-        "d_gains": np.array([1.0, 1.0, 0.1, 1.0, 1.0, 0.1], dtype=np.float32),
+        "p_gains": np.array([5.0, 5.0, 0.0, 5.0, 5.0, 0.0], dtype=np.float32),
+        "d_gains": np.array([1.5, 1.5, 0.25, 1.5, 1.5, 0.25], dtype=np.float32),
     },
 }
 
@@ -119,6 +112,9 @@ OBS_SCALE_DOF_VEL = 0.05
 POS_ACTION_SCALE = 0.5
 VEL_ACTION_SCALE = 10.0
 TORQUE_SCALE = 1.0
+TORQUE_LIMITS = np.array([50.0, 50.0, 5.0, 50.0, 50.0, 5.0], dtype=np.float32)
+SIM_DT = 0.005
+POLICY_DT = 0.01
 
 CLIP_ACTIONS = 100.0
 CLIP_OBSERVATIONS = 100.0
@@ -128,16 +124,16 @@ SERIAL_LEG_L1 = 0.175
 SERIAL_LEG_L2 = 0.208
 SERIAL_MAP_EPS = 1e-4
 
-CMD_LIN_VEL_STEP = 2.4
+CMD_LIN_VEL_STEP = 2.0
 CMD_LIN_VEL_RAMP_RATE = 2.3
-CMD_YAW_VEL_STEP = 4.0
+CMD_YAW_VEL_STEP = 2.0
 CMD_YAW_VEL_RAMP_RATE = 4.0
 CMD_HEIGHT_STEP = 0.01
 
-LIN_VEL_MIN = -2.8
-LIN_VEL_MAX = 2.8
-YAW_VEL_MIN = -6.0
-YAW_VEL_MAX = 6.0
+LIN_VEL_MIN = -2.0
+LIN_VEL_MAX = 2.0
+YAW_VEL_MIN = -2.0
+YAW_VEL_MAX = 2.0
 
 SIDE_CAM_AZIMUTH_OFFSET = 90.0
 SIDE_CAM_ELEVATION = -12.0
@@ -281,8 +277,8 @@ def clip_by_ctrlrange(u: np.ndarray, ctrl_lo: np.ndarray, ctrl_hi: np.ndarray) -
     return np.minimum(np.maximum(u, ctrl_lo), ctrl_hi)
 
 
-def clip_taumax(u: np.ndarray) -> np.ndarray:
-    return np.clip(np.asarray(u, dtype=np.float32), -taumax, taumax).astype(np.float32)
+def clip_torque_limits(u: np.ndarray) -> np.ndarray:
+    return np.clip(np.asarray(u, dtype=np.float32), -TORQUE_LIMITS, TORQUE_LIMITS).astype(np.float32)
 
 
 def fit_vector(vec: np.ndarray, dim: int) -> np.ndarray:
@@ -435,10 +431,10 @@ def main():
     parser.add_argument("--xml", type=str, default=RUNTIME_PRESETS[DEFAULT_POLICY_NAME]["xml_path"])
     parser.add_argument("--onnx", type=str, default=RUNTIME_PRESETS[DEFAULT_POLICY_NAME]["onnx_path"])
     parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
-    parser.add_argument("--policy_dt", type=float, default=0.01)
+    parser.add_argument("--policy_dt", type=float, default=POLICY_DT)
     parser.add_argument("--jump_onnx", type=str, default=JUMP_XIAOFUDU_ONNX_PATH)
     parser.add_argument("--jump_policy_duration", type=float, default=JUMP_POLICY_DURATION_S)
-    parser.add_argument("--base_body_name", type=str, default="base_Link_del")
+    parser.add_argument("--base_body_name", type=str, default="base_link")
     parser.add_argument("--quat_source", type=str, default="xquat", choices=["xquat", "qpos", "sensor"])
     parser.add_argument("--angvel_in_body", type=int, default=1)
     parser.add_argument("--dof_vel_use_pos_diff", type=int, default=1)
@@ -458,6 +454,17 @@ def main():
     m = mujoco.MjModel.from_xml_path(args.xml)
     d = mujoco.MjData(m)
     mujoco.mj_forward(m, d)
+
+    model_dof_names = [
+        mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_JOINT, joint_id)
+        for joint_id in range(m.njnt)
+        if int(m.jnt_type[joint_id]) != int(mujoco.mjtJoint.mjJNT_FREE)
+    ]
+    if model_dof_names != DOF_NAMES:
+        raise ValueError(
+            "MuJoCo joint order/model does not match the Isaac serial URDF: "
+            f"expected {DOF_NAMES}, got {model_dof_names}."
+        )
 
     providers = ["CUDAExecutionProvider", "CPUExecutionProvider"] if device.type == "cuda" else ["CPUExecutionProvider"]
     sess = load_onnx_session(args.onnx, providers)
@@ -492,6 +499,14 @@ def main():
     ctrl_hi = np.asarray(m.actuator_ctrlrange[act_ids, 1], dtype=np.float32).copy()
     unlimited = (np.abs(ctrl_lo) < 1e-9) & (np.abs(ctrl_hi) < 1e-9)
     ctrl_lo[unlimited], ctrl_hi[unlimited] = -1e6, 1e6
+    if not (
+        np.allclose(ctrl_lo, -TORQUE_LIMITS, rtol=0.0, atol=1e-6)
+        and np.allclose(ctrl_hi, TORQUE_LIMITS, rtol=0.0, atol=1e-6)
+    ):
+        raise ValueError(
+            f"MuJoCo actuator limits [{ctrl_lo}, {ctrl_hi}] do not match Isaac limits "
+            f"{TORQUE_LIMITS}."
+        )
 
     base_bid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, args.base_body_name)
     if base_bid < 0:
@@ -500,6 +515,10 @@ def main():
         raise RuntimeError(f"Body '{args.base_body_name}' has no joint.")
     base_freejid = int(m.body_jntadr[base_bid])
     base_qpos_adr = int(m.jnt_qposadr[base_freejid])
+    for i, joint_name in enumerate(DOF_NAMES):
+        joint_id = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_JOINT, joint_name)
+        d.qpos[int(m.jnt_qposadr[joint_id])] = active_default_dof_pos[i]
+    mujoco.mj_forward(m, d)
     ori_sid = mj_sensor_id(m, "orientation")
     sensor_cache = {}
 
@@ -520,9 +539,16 @@ def main():
         cache_sensor(f"{dn}_p")
         cache_sensor(f"{dn}_v")
 
-    sim_dt = 0.005
+    sim_dt = float(m.opt.timestep)
+    if not math.isclose(sim_dt, SIM_DT, rel_tol=0.0, abs_tol=1e-12):
+        raise ValueError(f"MuJoCo timestep {sim_dt} does not match Isaac training timestep {SIM_DT}.")
     steps_per_policy = max(1, int(round(args.policy_dt / sim_dt)))
     eff_policy_dt = steps_per_policy * sim_dt
+    if not math.isclose(eff_policy_dt, POLICY_DT, rel_tol=0.0, abs_tol=1e-12):
+        raise ValueError(
+            f"Policy timestep {eff_policy_dt} does not match Isaac control timestep {POLICY_DT} "
+            f"({int(round(POLICY_DT / SIM_DT))} simulation steps)."
+        )
 
     history = None
     last_actions = np.zeros((6,), dtype=np.float32)
@@ -627,7 +653,7 @@ def main():
             and jump_f_scale_start_time <= float(d.time) < jump_f_scale_end_time
         ):
             tau = scale_serial_leg_f(tau, q, float(args.jump_f_scale))
-        return clip_taumax(tau)
+        return clip_torque_limits(tau)
 
     def switch_policy(policy_name: str) -> None:
         nonlocal sess, obs_name, hist_name, history, last_actions
@@ -744,7 +770,7 @@ def main():
             for step_idx in range(steps_per_policy):
                 # time.sleep(sim_dt)
                 tau = compute_torque(actions, q_step, qd_step)
-                u = clip_taumax(clip_by_ctrlrange(tau, ctrl_lo, ctrl_hi))
+                u = clip_torque_limits(clip_by_ctrlrange(tau, ctrl_lo, ctrl_hi))
                 d.ctrl[:] = 0.0
                 if torque_enabled:
                     d.ctrl[act_ids] = u
