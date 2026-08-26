@@ -1,6 +1,7 @@
 <mujoco model="infantry_V4_serial">
   <!-- Nominal MuJoCo counterpart of the Isaac Gym infantry_V4_increase URDF. -->
-  <compiler angle="radian" meshdir="../../../../plane/resources/robots/infantry_V4/meshes"/>
+  <compiler angle="radian" balanceinertia="true"
+            meshdir="../../../../plane/resources/robots/infantry_V4/meshes"/>
   <option timestep="0.005" gravity="0 0 -9.81" integrator="implicitfast" solver="Newton" iterations="100"/>
 
   <default>
